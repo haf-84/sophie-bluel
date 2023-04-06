@@ -1,0 +1,64 @@
+/* ou alors utiliser style.css pr la page de connexion? */
+body{
+    background-color: #FFFEF8;
+}
+
+header h1 span{
+    text-transform: uppercase;
+    line-height: 2;
+}
+
+header nav ul li:nth-child(3){
+    font-weight: bold;
+}
+/* #login{
+    display: flex;
+} */
+
+#login {
+	width: 50%;
+	margin: auto;
+}
+#login > * {
+	text-align: center;
+
+}
+#login h2, #login form a{
+	margin-bottom: 20px;
+    text-align: center;
+}
+#login form a{
+    color: #3D3D3D;
+    font-size: 14px;
+    vertical-align: top;
+    line-height: 16px;
+}
+#login form a:hover, #login form .btn-submit{
+    cursor: pointer;
+}
+#login form{
+	text-align: left;
+	margin-top:30px;
+	display: flex;
+	flex-direction: column;
+}
+
+#login input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#login label {
+	margin: 2em 0 1em 0;
+}
+
+
+/***********STYLE MESSAGE D'ERREUR*********/
+.error-msg{
+    background-color: bisque;
+    height: 50px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
