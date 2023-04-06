@@ -382,6 +382,9 @@ fetchData();
         body: newForm
     
     })
+
+    //conditions à ajouter pr vérifier que formulaire est rempli avant de l'envoyer à l'API
+    
         .then(response =>{
             if (response.status ===201){
                 console.log("formulaire correctement envoyé, félicitations")
