@@ -371,6 +371,7 @@ fetchData();
         newForm.append("category",categoryNewProject.value);
         console.log(newForm);
         
+        //conditions à ajouter avant d'envoyer le formulaire
 
         fetch("http://localhost:5678/api/works", {
         method: 'POST',
@@ -383,7 +384,7 @@ fetchData();
     
     })
 
-    //conditions à ajouter pr vérifier que formulaire est rempli avant de l'envoyer à l'API
+    
     
         .then(response =>{
             if (response.status ===201){
