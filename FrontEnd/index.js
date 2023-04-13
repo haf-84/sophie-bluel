@@ -326,33 +326,49 @@ fetchData();
     let preview= document.querySelector('.preview');
     const buttonSubmitFormAjoutPhoto= document.querySelector('.submit-form-ajout-photo');
 
-    input.addEventListener('change',updateImageDisplay);
-    function updateImageDisplay(){
-        const fileList= this.files //pour avoir le(s) fichier(s) sélectionné(s)
+    let updateImageDisplay; 
 
-        //créer un nouveau objet FileReader pour lire le fichier
-        const reader= new FileReader();
-        
-        // mettre en place le gestionnaire d evenement pr quand le reader a chargé le fichier 
-        reader.onload = function() {
+    function imageDisplayForm(){
 
-        // creer un nv element image à afficher dans le preview
-        const image = new Image();
-        image.src = reader.result;
-        image.crossOrigin="anonymous";
-        preview.innerHTML="";
-        image.style.width="130px";
-        image.style.height="190px";
-        preview.appendChild(image);
-        preview.style.padding="0"
-    };
-        console.log(fileList)
-        // lire le fichier comme une data URL 
-        reader.readAsDataURL(fileList[0]);
+        input.addEventListener('change',updateImageDisplay);
+        function updateImageDisplay(){
 
-        buttonSubmitFormAjoutPhoto.style.backgroundColor="#1D6154";
-        buttonSubmitFormAjoutPhoto.style.color="white";
+            function updateImageDisplay2 (){
+            const fileList= this.files //pour avoir le(s) fichier(s) sélectionné(s)
+    
+            //créer un nouveau objet FileReader pour lire le fichier
+            const reader= new FileReader();
+            
+            // mettre en place le gestionnaire d evenement pr quand le reader a chargé le fichier 
+            reader.onload = function() {
+    
+            // creer un nv element image à afficher dans le preview
+            const image = new Image();
+            image.src = reader.result;
+            image.crossOrigin="anonymous";
+            
+            //pr effacer l'image précédente dans le preview container s'il y en a une 
+            preview.innerHTML="";
+            preview.appendChild(image);
+    
+            image.style.width="130px";
+            image.style.height="190px";
+            preview.appendChild(image);
+            preview.style.padding="0"
+        };
+            console.log(fileList)
+            // lire le fichier comme une data URL 
+            reader.readAsDataURL(fileList[0]);
+        }
+        updateImageDisplay2 ();
+    
+            buttonSubmitFormAjoutPhoto.style.backgroundColor="#1D6154";
+            buttonSubmitFormAjoutPhoto.style.color="white";
+        }
+
     }
+    imageDisplayForm();
+
     
     //On récupère le formulaire 
 
@@ -371,7 +387,49 @@ fetchData();
         newForm.append("category",categoryNewProject.value);
         console.log(newForm);
         
-        //conditions à ajouter avant d'envoyer le formulaire
+        //conditions à ajouter avant d'envoyer le formulaire 
+
+        if (input.files.length>0){
+            const file = input.files[0];
+            const fileType= file.type;
+            const fileSize= file.size;
+            if ((fileType==='image/png'|| fileType==='image/jpg') && fileSize<= 4*1024*1024){
+                //le fichier est valide
+                console.log("Fichier est valide")
+            }else{
+                //fichier invalide, afficher un msg d'erreur
+                alert("Veuillez sélectionner une image valide: png/jpg et max 4 Mo")
+                input.removeEventListener('change',updateImageDisplay);
+                updateImageDisplay();
+
+            }
+        }else{
+            //aucun fichier sélectionné, afficher un msg d'erreur
+            alert("Veuillez sélectionner une image valide")
+        }
+
+        //on s'assure qu'il y ait bien du texte et pas seulement white spaces
+        const textValue= titleProject.value.trim();
+        if (textValue.length>0){
+            //Le texte est valide
+        }else{
+            //le texte est invalide, afficher un msg d'erreur
+            alert("Veuillez remplir le champ titre avec du texte")
+        }
+
+        //je m'assure qu'une option a bien été sélectionnée
+        const selectValue= categoryNewProject.value;
+
+        if (selectValue!==""){
+            //select input est valide
+        }else{
+            //select input est invalide, afficher un msg d'erreur
+            alert("Veuillez sélectionner une option pour la catégorie")
+        }
+
+
+
+
 
         fetch("http://localhost:5678/api/works", {
         method: 'POST',
@@ -418,6 +476,18 @@ fetchData();
                 bigContainer2.style.display="none"; //on fait disparaitre la partie 2 de la modale et on fait apparaitre partie 1                
 
                 console.log(input.files[0]);
+                // imageDisplayForm();
+
+                input.value= "";
+                preview.innerHTML="";
+                preview.innerHTML= `<i class="fas fa-sharp fa-regular fa-image"></i>
+                <label for="fichier-photo">+ Ajouter photo</label>
+                <input type="file" name="fichier-photo" id="fichier-photo" accept="image/png, image/jpg" max-size="4194304">
+                <p>jpg, png : 4mo max</p>`;
+                preview.style.padding="30px";
+                    //    input.files[0]="";
+                       updateImageDisplay2 ()
+                
                 
                 return response.json
                 
