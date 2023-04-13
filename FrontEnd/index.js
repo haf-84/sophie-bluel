@@ -333,7 +333,7 @@ fetchData();
         input.addEventListener('change',updateImageDisplay);
         function updateImageDisplay(){
 
-            function updateImageDisplay2 (){
+            
             const fileList= this.files //pour avoir le(s) fichier(s) sélectionné(s)
     
             //créer un nouveau objet FileReader pour lire le fichier
@@ -359,8 +359,7 @@ fetchData();
             console.log(fileList)
             // lire le fichier comme une data URL 
             reader.readAsDataURL(fileList[0]);
-        }
-        updateImageDisplay2 ();
+    
     
             buttonSubmitFormAjoutPhoto.style.backgroundColor="#1D6154";
             buttonSubmitFormAjoutPhoto.style.color="white";
@@ -486,7 +485,7 @@ fetchData();
                 <p>jpg, png : 4mo max</p>`;
                 preview.style.padding="30px";
                     //    input.files[0]="";
-                       updateImageDisplay2 ()
+                    //    updateImageDisplay2 ()
                 
                 
                 return response.json
