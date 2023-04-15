@@ -211,11 +211,10 @@ function fetchData(){
            
             //Pour faire apparaitre le bouton agrandir la photo au survol de la photo
 
-            figureProject.addEventListener("mouseenter",function(){
+            imageProject.addEventListener("mouseover",function(){
                 buttonExtendPhoto.style.display="block";
-                figureProject.style.transition="none";
             })
-            figureProject.removeEventListener("mouseleave",function(){
+            imageProject.addEventListener("mouseout",function(){
                 buttonExtendPhoto.style.display="none";
             })
 
@@ -303,6 +302,11 @@ fetchData();
     //Pour avoir les catégories directement depuis l'API dans le formulaire d'ajout de projet
 
     const categoryChoicesContainer= document.querySelector('#category-choice');
+    const optionCategorieEmpty= document.createElement('option');
+    optionCategorieEmpty.innerHTML="";
+    optionCategorieEmpty.value="";
+    categoryChoicesContainer.appendChild(optionCategorieEmpty);
+    
 
     //Appel API pour récupérer les catégories pour avoir la liste des catégories dans le formulaire de manière dynamique
 
@@ -325,8 +329,15 @@ fetchData();
     const input= document.querySelector('#fichier-photo');
     let preview= document.querySelector('.preview');
     const buttonSubmitFormAjoutPhoto= document.querySelector('.submit-form-ajout-photo');
+    const formAjoutPhotoPreviewContainer = document.querySelector('.form-ajout-photo-preview');
+    console.log(formAjoutPhotoPreviewContainer);
+    
 
-    let updateImageDisplay; 
+    
+        const preview2= document.createElement("div");
+        preview2.className="preview2";
+        formAjoutPhotoPreviewContainer.appendChild(preview2);
+        preview2.style.display="none";
 
     function imageDisplayForm(){
 
@@ -334,7 +345,7 @@ fetchData();
         function updateImageDisplay(){
 
             
-            const fileList= this.files //pour avoir le(s) fichier(s) sélectionné(s)
+            let fileList= this.files //pour avoir le(s) fichier(s) sélectionné(s)
     
             //créer un nouveau objet FileReader pour lire le fichier
             const reader= new FileReader();
@@ -347,22 +358,25 @@ fetchData();
             image.src = reader.result;
             image.crossOrigin="anonymous";
             
-            //pr effacer l'image précédente dans le preview container s'il y en a une 
-            preview.innerHTML="";
-            preview.appendChild(image);
+            preview.style.display="none";
+            preview2.style.display="flex";
+           
     
             image.style.width="130px";
             image.style.height="190px";
-            preview.appendChild(image);
-            preview.style.padding="0"
+            preview2.appendChild(image);
         };
-            console.log(fileList)
+            // console.log(fileList[0]);
             // lire le fichier comme une data URL 
             reader.readAsDataURL(fileList[0]);
+            
+            //mettre à jour la propriété files de file input avec un nouveau objet FileList 
+            // input.files= new FileList(fileList[0])
     
     
             buttonSubmitFormAjoutPhoto.style.backgroundColor="#1D6154";
             buttonSubmitFormAjoutPhoto.style.color="white";
+            preview2.innerHTML="";
         }
 
     }
@@ -387,19 +401,18 @@ fetchData();
         console.log(newForm);
         
         //conditions à ajouter avant d'envoyer le formulaire 
-
+        const file = input.files[0];
+        const fileType= file.type;
+        const fileSize= file.size;
         if (input.files.length>0){
-            const file = input.files[0];
-            const fileType= file.type;
-            const fileSize= file.size;
+            
             if ((fileType==='image/png'|| fileType==='image/jpg') && fileSize<= 4*1024*1024){
                 //le fichier est valide
                 console.log("Fichier est valide")
             }else{
                 //fichier invalide, afficher un msg d'erreur
                 alert("Veuillez sélectionner une image valide: png/jpg et max 4 Mo")
-                input.removeEventListener('change',updateImageDisplay);
-                updateImageDisplay();
+
 
             }
         }else{
@@ -428,18 +441,16 @@ fetchData();
 
 
 
+        if (selectValue!=="" && textValue.length>0 && ((fileType==='image/png'|| fileType==='image/jpg') && fileSize<= 4*1024*1024)){
 
-
-        fetch("http://localhost:5678/api/works", {
-        method: 'POST',
-        headers: {
+            fetch("http://localhost:5678/api/works", {
+            method: 'POST',
+            headers: {
             'accept': 'application/json',
             // 'content-type':'multipart/form-data',
             'Authorization': `Bearer ${localStorage.getItem("token")}`
-        },
-        body: newForm
-    
-    })
+            },
+            body: newForm })
 
     
     
@@ -459,45 +470,27 @@ fetchData();
                 buttonSubmitFormAjoutPhoto.style.backgroundColor="#1D6154";
                 buttonSubmitFormAjoutPhoto.style.color="white";
                 formAjoutProjet.reset();// on vide les inputs du formulaire en appelant la méthode reset()
-                
-                // const fichierPhoto= document.querySelector('#fichier-photo');
-                // fichierPhoto.value=""; ne fonctionne pas 
-
-                // preview.innerHTML="";
-                // preview.innerHTML= `<i class="fas fa-sharp fa-regular fa-image"></i>
-                // <label for="fichier-photo">+ Ajouter photo</label>
-                // <input type="file" name="fichier-photo" id="fichier-photo" accept="image/png, image/jpg" max-size="4194304">
-                // <p>jpg, png : 4mo max</p>`;
-                // preview.style.padding="30px";
+                input.files[0]=null;
+                console.log(input.files[0]);
 
                 // closeModale(); // on ferme la modale
                 bigContainer.style.display=""; 
                 bigContainer2.style.display="none"; //on fait disparaitre la partie 2 de la modale et on fait apparaitre partie 1                
 
-                console.log(input.files[0]);
-                // imageDisplayForm();
-
-                input.value= "";
-                preview.innerHTML="";
-                preview.innerHTML= `<i class="fas fa-sharp fa-regular fa-image"></i>
-                <label for="fichier-photo">+ Ajouter photo</label>
-                <input type="file" name="fichier-photo" id="fichier-photo" accept="image/png, image/jpg" max-size="4194304">
-                <p>jpg, png : 4mo max</p>`;
-                preview.style.padding="30px";
-                    //    input.files[0]="";
-                    //    updateImageDisplay2 ()
+                preview2.style.display="none";
+                preview2.innerHTML="";
+                preview.style.display="flex";
+            
                 
-                
-                return response.json
-                
-            }else{
-                console.log("formulaire pas envoyé")
-                throw new Error("La requête a échoué")
-            }
+                }else{
+                    console.log("formulaire pas envoyé")
+                    throw new Error("La requête a échoué")
+                }
         })
-        .then(data => {console.log(data)})
-        .catch(erreur => console.error(erreur))
-    
+        .then((data) => {console.log(data)})
+        .catch(erreur => console.error(erreur))}
+
+        
     
     
     })

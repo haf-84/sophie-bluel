@@ -550,6 +550,10 @@ header nav ul li a:hover{
 	font-size: 25px;
 	margin-top: 20px;
     margin-bottom: 30px;
+	display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .big-container2 input[type="file"]{
@@ -580,6 +584,16 @@ header nav ul li a:hover{
 
 .preview{
 	padding: 30px;
+	background-color: #E8F1F6;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview2{
+	height: 190px;
+	padding: 0;
 	background-color: #E8F1F6;
     display: flex;
     flex-direction: column;
