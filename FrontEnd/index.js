@@ -14,7 +14,8 @@ async function main(){
 
 allButtons = document.querySelector(".btn-filter-container");
 const btnAllWorks= document.createElement('button');
-btnAllWorks.innerText="Tous"
+btnAllWorks.innerText="Tous";
+btnAllWorks.className="button-filter-js";
 allButtons.appendChild(btnAllWorks);
 
 btnAllWorks.addEventListener("click", function(){
@@ -59,10 +60,12 @@ function generateWorks(works){
     console.log(works);
 }
 
+
 function categoryFilter(categories){
     console.log(categories);
     for (let i=0; i<categories.length; i++){
         const btnCategory= document.createElement('button');
+            btnCategory.className="button-filter-js";
             btnCategory.innerText=categories[i].name;
             allButtons.appendChild(btnCategory);
             btnCategory.addEventListener("click", function(){
@@ -77,6 +80,8 @@ function categoryFilter(categories){
 };
 
 main();
+
+
 
 // Changements une fois utilisateur connecté 
 
