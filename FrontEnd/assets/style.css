@@ -364,50 +364,7 @@ header nav ul li a:hover{
 	width: 70px;
 	height: 90px;
 }
-/* 
-.div0 { 
-	grid-area: 1 / 1 / 2 / 2;
-}
-.div1 { 
-	grid-area: 1 / 2 / 2 / 3; 
-}
 
-.div2 { 
-	grid-area: 1 / 3 / 2 / 4; 
-}
-
-.div3 { 
-	grid-area: 1 / 4 / 2 / 5; 
-}
-
-.div4 { 
-	grid-area: 1 / 5 / 2 / 6; 
-}
-
-.div5 { 
-	grid-area: 2 / 1 / 3 / 2; 
-}
-
-.div6 { 
-	grid-area: 2 / 2 / 3 / 3; 
-}
-
-.div7 { 
-	grid-area: 2 / 3 / 3 / 4; 
-}
-
-.div8 { 
-	grid-area: 2 / 4 / 3 / 5; 
-}
-
-.div9 { 
-	grid-area: 2 / 5 / 3 / 6;
-}
-
-.div10 { 
-	grid-area: 3 / 1 / 4 / 2; 
-}
- */
 
 .modal-wrapper .parag-galerie-photo{
 	font-size: 25px;
@@ -547,9 +504,6 @@ header nav ul li a:hover{
     border: none;
 }
 
-/* .big-container2-buttons .previous-modale-button .fa-arrow-left{
-	font-size: 20px;
-} */
 
 .big-container2 .parag-ajout-photo-modale{
 	font-size: 25px;
@@ -627,3 +581,13 @@ header nav ul li a:hover{
 	cursor: pointer;
 }
 
+/***********STYLE MESSAGE D'ERREUR AJOUT PHOTO*********/
+.error-msg1, .error-msg2, .error-msg3{
+    background-color: bisque;
+    height: 50px;
+	width: 440px;
+    display:none;
+    align-items: center;
+    justify-content: center;
+	margin-top:10px;
+}

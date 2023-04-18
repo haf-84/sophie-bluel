@@ -7,9 +7,7 @@ containerErrorMsg.style.display="none"; // modifier cela si combinaison mauvaise
 
 //Récupérer les éléments nécessaires //
 
-// const emailInput = document.querySelector('#email');
-// const passwordInput = document.querySelector('#password');
-// const submitBtn = document.querySelector('.btn-submit');
+
 const form = document.querySelector('#login-form');
 
 form.addEventListener("submit",function(event){
@@ -27,7 +25,6 @@ form.addEventListener("submit",function(event){
     })
     .then((response) =>response.json())
     .then((data)=>{
-        console.log(data);
 
         if (data.userId==1){
             localStorage.setItem("token",data.token);

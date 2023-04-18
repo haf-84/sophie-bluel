@@ -27,7 +27,7 @@ btnAllWorks.addEventListener("click", function(){
 
 const r = await fetch('http://localhost:5678/api/categories'); 
 const categories = await r.json();
-console.log(categories);
+
 
 categoryFilter(categories);
 
@@ -57,12 +57,12 @@ function generateWorks(works){
         workFigure.appendChild(workImage);
         workFigure.appendChild(workTitle);
     }
-    console.log(works);
+    
 }
 
 
 function categoryFilter(categories){
-    console.log(categories);
+    
     for (let i=0; i<categories.length; i++){
         const btnCategory= document.createElement('button');
             btnCategory.className="button-filter-js";
@@ -90,7 +90,7 @@ let token = localStorage.getItem("token");
 // cacher boutons catégories qd utilisateur connecté
 
 if (token){
-    console.log("Bienvenue Sophie");
+    // console.log("Bienvenue Sophie");
     document.querySelector(".btn-filter-container").style.display="none";
     let log=document.getElementById("log");
     log.innerText="logout";
@@ -180,7 +180,7 @@ function fetchData(){
         fetch('http://localhost:5678/api/works')
     .then((response)=>response.json())
     .then((data)=>{
-        console.log(data);
+        // console.log(data);
         for (let i=0;i<data.length;i++){
             let div= document.createElement('div');           
             div.className="div"+[i];
@@ -230,7 +230,7 @@ function fetchData(){
             //Pour supprimer un projet en appuyant sur bouton poubelle
 
             buttonTrashCan.addEventListener("click", function(){
-                console.log(data[i]);
+                // console.log(data[i]);
                 fetch(`http://localhost:5678/api/works/${data[i].id}`, {
                 method: 'DELETE',
                 headers: {
@@ -241,7 +241,7 @@ function fetchData(){
             })
                 .then(response => {
                     if (response.status===204){
-                        console.log("Projet correctement supprimé, félicitations")
+                        // console.log("Projet correctement supprimé, félicitations")
 
                         const galleryWorks= document.querySelector(".gallery");
                         galleryWorks.innerHTML= ""; // on le vide puis on fait un appel à la fonction main 
@@ -318,7 +318,7 @@ fetchData();
     fetch('http://localhost:5678/api/categories')
     .then((response)=>response.json())
     .then((data)=>{
-        console.log(data);
+
         for (let i=0; i<data.length;i++){
             const optionCategorie= document.createElement('option');
             optionCategorie.innerHTML=data[i].name;
@@ -335,7 +335,7 @@ fetchData();
     let preview= document.querySelector('.preview');
     const buttonSubmitFormAjoutPhoto= document.querySelector('.submit-form-ajout-photo');
     const formAjoutPhotoPreviewContainer = document.querySelector('.form-ajout-photo-preview');
-    console.log(formAjoutPhotoPreviewContainer);
+    
     
 
     
@@ -391,78 +391,46 @@ fetchData();
     //On récupère le formulaire 
 
     const formAjoutProjet = document.querySelector('.form-ajout-photo');
+    
+    
 
+    const photo= document.querySelector('#fichier-photo');
+        
+    const titleProject = document.querySelector('#title-project');
+
+    const categoryNewProject= document.querySelector('#category-choice');
 
     formAjoutProjet.addEventListener("submit", function(event){
         event.preventDefault();
-        const newForm= new FormData();
-
-        console.log(input.files[0]);
-        newForm.append("image",input.files[0]);
-        const titleProject = document.querySelector('#title-project');
-        newForm.append("title",titleProject.value);
-        const categoryNewProject= document.querySelector('#category-choice');
-        newForm.append("category",categoryNewProject.value);
-        console.log(newForm);
+                
         
         //conditions à ajouter avant d'envoyer le formulaire 
-        const file = input.files[0];
-        const fileType= file.type;
-        const fileSize= file.size;
-        if (input.files.length>0){
-            
-            if ((fileType==='image/png'|| fileType==='image/jpg') && fileSize<= 4*1024*1024){
-                //le fichier est valide
-                console.log("Fichier est valide")
-            }else{
-                //fichier invalide, afficher un msg d'erreur
-                alert("Veuillez sélectionner une image valide: png/jpg et max 4 Mo")
+    
 
 
-            }
-        }else{
-            //aucun fichier sélectionné, afficher un msg d'erreur
-            alert("Veuillez sélectionner une image valide")
-        }
-
-        //on s'assure qu'il y ait bien du texte et pas seulement white spaces
-        const textValue= titleProject.value.trim();
-        if (textValue.length>0){
-            //Le texte est valide
-        }else{
-            //le texte est invalide, afficher un msg d'erreur
-            alert("Veuillez remplir le champ titre avec du texte")
-        }
-
-        //je m'assure qu'une option a bien été sélectionnée
-        const selectValue= categoryNewProject.value;
-
-        if (selectValue!==""){
-            //select input est valide
-        }else{
-            //select input est invalide, afficher un msg d'erreur
-            alert("Veuillez sélectionner une option pour la catégorie")
-        }
+        if(input.files[0]!==undefined && titleProject.value.trim().length>0 && categoryNewProject.value!==""){
 
 
+            const newForm= new FormData();
+            newForm.append("image",input.files[0]);
+            newForm.append("title",titleProject.value);
+            newForm.append("category",categoryNewProject.value);
 
-        if (selectValue!=="" && textValue.length>0 && ((fileType==='image/png'|| fileType==='image/jpg') && fileSize<= 4*1024*1024)){
 
             fetch("http://localhost:5678/api/works", {
             method: 'POST',
             headers: {
             'accept': 'application/json',
-            // 'content-type':'multipart/form-data',
             'Authorization': `Bearer ${localStorage.getItem("token")}`
             },
             body: newForm })
 
     
     
-        .then(response =>{
-            if (response.status ===201){
-                console.log("formulaire correctement envoyé, félicitations")
-                // return response.json(); // parser la réponse en json
+            .then(response =>{
+                if (response.status ===201){
+                // console.log("formulaire correctement envoyé, félicitations");
+                
                 const galleryWorks= document.querySelector(".gallery");
                 galleryWorks.innerHTML= ""; // on le vide puis on fait un appel à la fonction main 
                 main();
@@ -476,27 +444,61 @@ fetchData();
                 buttonSubmitFormAjoutPhoto.style.color="white";
                 formAjoutProjet.reset();// on vide les inputs du formulaire en appelant la méthode reset()
                 input.files[0]=null;
-                console.log(input.files[0]);
 
-                // closeModale(); // on ferme la modale
+
+                
                 bigContainer.style.display=""; 
                 bigContainer2.style.display="none"; //on fait disparaitre la partie 2 de la modale et on fait apparaitre partie 1                
+                // closeModale(); // on ferme la modale
 
                 preview2.style.display="none";
                 preview2.innerHTML="";
                 preview.style.display="flex";
             
                 
-                }else{
-                    console.log("formulaire pas envoyé")
+                }
+                
+                
+                else{
+                    // console.log("formulaire pas envoyé")
                     throw new Error("La requête a échoué")
                 }
-        })
-        .then((data) => {console.log(data)})
-        .catch(erreur => console.error(erreur))}
-
-        
     
+            
+        })
+        
+        .catch(erreur => console.error(erreur))
+        }
+        else {
+            if(categoryNewProject.value==""){
+            let msgError3= document.querySelector('.error-msg3');
+            msgError3.style.display="flex";
+            }
+            else{
+                let msgError3= document.querySelector('.error-msg3');
+            msgError3.style.display="none";
+            }
+
+            let textValue=titleProject.value.trim();
+            if(textValue.length<=0){
+                let msgError2= document.querySelector('.error-msg2');
+                msgError2.style.display="flex";
+            }else{
+                let msgError2= document.querySelector('.error-msg2');
+                msgError2.style.display="none";
+            }
+
+            if(photo.files[0]==undefined ){
+                let msgError1= document.querySelector('.error-msg1');
+                msgError1.style.display="flex";          
+            }
+            else{
+                let msgError1= document.querySelector('.error-msg1');
+                msgError1.style.display="none";
+            }
+        }
+        
+        
     
     })
 
@@ -512,7 +514,7 @@ fetchData();
     //Pour fermer la modale 
         // 1/ En cliquant sur bouton fermer
     let closeModaleButton = document.getElementsByClassName('close-modale-button');
-    console.log(closeModaleButton)
+    
     for (let k=0; k<closeModaleButton.length; k++){
             closeModaleButton[k].addEventListener("click",function(){
             //enregistrer l'état de la modale dans localstorage
